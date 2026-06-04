@@ -1,16 +1,21 @@
 import React, { useState } from 'react' 
 
   const Statistics = (props) => {
-  if (props.clicks.total>0){
+  if (props.clicks.good>0 || props.clicks.bad>0 || props.clicks.neutral>0){
+  let totalClicks=props.clicks.good+props.clicks.bad+props.clicks.neutral
   return (
     <div>
        <h1>statistics</h1>
-        <p>good {props.clicks.good}<br></br>
-        neutral {props.clicks.neutral}<br></br>
-        bad {props.clicks.bad}<br></br>
-        all {props.clicks.total}<br></br>
-        average {(props.clicks.bad*-1+props.clicks.neutral*0+props.clicks.good)/props.clicks.total}<br></br>
-        positive {(props.clicks.good/props.clicks.total)*100} %<br></br></p>
+       <table>
+       <tbody> 
+       <StatisticLine text="good" value={props.clicks.good} />
+       <StatisticLine text="neutral" value={props.clicks.neutral} />
+       <StatisticLine text="bad" value={props.clicks.bad} />
+       <StatisticLine text="all" value={totalClicks} />
+       <StatisticLine text="average" value={(props.clicks.bad*-1+props.clicks.neutral*0+props.clicks.good)/totalClicks} />
+       <StatisticLine text="positive" value={(props.clicks.good/totalClicks)*100} />
+       </tbody>
+       </table>
     </div>
   )
   }
@@ -23,12 +28,37 @@ import React, { useState } from 'react'
   }
 }
 
+  const StatisticLine = (props) => {
+
+     return (
+        <tr><td>{props.text} {props.value}</td></tr>
+    )
+  }
 
 
+ const Button = (props) => {
+  if (props.feedback=="good")
+  {
+   return (
+      <button onClick={props.func}>good</button>
+    )
+  }
+    if (props.feedback=="neutral")
+  {
+   return (
+      <button onClick={props.func}>neutral</button>
+    )
+  }
+    if (props.feedback=="bad")
+  {
+   return (
+      <button onClick={props.func}>bad</button>
+    )
+  }
+ }
 const App = () => {
-
   const [clicks, setClicks] = useState({
-    good: 0, neutral: 0, bad: 0, total:0
+    good: 0, neutral: 0, bad: 0
   })
 
   const handleGoodClick = () => {
@@ -36,7 +66,6 @@ const App = () => {
       good: clicks.good + 1, 
       neutral: clicks.neutral, 
       bad: clicks.bad,
-      total: clicks.total+1
     }
     setClicks(newClicks)
   }
@@ -46,7 +75,6 @@ const App = () => {
       good: clicks.good, 
       neutral: clicks.neutral + 1,
       bad: clicks.bad,
-      total: clicks.total+1
     }
     setClicks(newClicks)
   }
@@ -55,26 +83,16 @@ const App = () => {
       good: clicks.good, 
       neutral: clicks.neutral,
       bad: clicks.bad + 1,
-      total: clicks.total+1
     }
     setClicks(newClicks)
-  }
-    const Feedback = (props) => {
-      //väliaikasesti tääl ehk
-  return (
-    <div>
-        <h1>give feedback</h1>
-        <button onClick={handleGoodClick}>good</button>
-        <button onClick={handleNeutralClick}>neutral</button>
-        <button onClick={handleBadClick}>bad</button>
-    </div>
-  )
   }
 
   return (
     <div>
       <div>
-        <Feedback/>
+        <Button func={handleGoodClick} feedback="good"/>
+        <Button func={handleNeutralClick} feedback="neutral"/>
+        <Button func={handleBadClick} feedback="bad"/>
         <Statistics clicks={clicks}/>
       </div>
     </div>
