@@ -5,7 +5,7 @@ import React, { useState } from 'react'
   let totalClicks=props.clicks.good+props.clicks.bad+props.clicks.neutral
   return (
     <div>
-       <h1>statistics</h1>
+      <h1>statistics</h1>
        <table>
        <tbody> 
        <StatisticLine text="good" value={props.clicks.good} />
@@ -13,7 +13,7 @@ import React, { useState } from 'react'
        <StatisticLine text="bad" value={props.clicks.bad} />
        <StatisticLine text="all" value={totalClicks} />
        <StatisticLine text="average" value={(props.clicks.bad*-1+props.clicks.neutral*0+props.clicks.good)/totalClicks} />
-       <StatisticLine text="positive" value={(props.clicks.good/totalClicks)*100} />
+       <StatisticLine text="positive" value={(props.clicks.good/totalClicks)*100+ " %"} />
        </tbody>
        </table>
     </div>
@@ -22,6 +22,7 @@ import React, { useState } from 'react'
   else{
     return (
       <div>
+        <h1>statistics</h1>
         <p>No feedback given</p>
       </div>
     )
@@ -90,6 +91,7 @@ const App = () => {
   return (
     <div>
       <div>
+        <h1>give feedback</h1>
         <Button func={handleGoodClick} feedback="good"/>
         <Button func={handleNeutralClick} feedback="neutral"/>
         <Button func={handleBadClick} feedback="bad"/>
